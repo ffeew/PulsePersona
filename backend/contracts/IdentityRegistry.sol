@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 contract IdentityRegistry {
     struct Identity {
-        address owner;
+        address owner; // the wallet address of the owner of the identity
         string didDocument;
         bool isActive;
     }
@@ -36,27 +36,29 @@ contract IdentityRegistry {
     }
 
     // Register a new identity
-    function registerIdentity(string memory did, string memory didDocument)
-        public
-    {
+    function registerIdentity(
+        string memory did,
+        string memory didDocument
+    ) public {
         require(identities[did].owner == address(0), "DID already registered");
         identities[did] = Identity(msg.sender, didDocument, true);
         emit IdentityRegistered(did, msg.sender);
+        return;
     }
 
-    function modifyDidDocument(string memory did, string memory newDidDocument)
-        public
-        onlyOwner(did)
-    {
+    function modifyDidDocument(
+        string memory did,
+        string memory newDidDocument
+    ) public onlyOwner(did) {
         identities[did].didDocument = newDidDocument;
         emit IdentityModified(did, newDidDocument);
+        return;
     }
 
-    function transferOwnership(string memory did, address newOwner)
-        public
-        onlyOwner(did)
-        returns (bool)
-    {
+    function transferOwnership(
+        string memory did,
+        address newOwner
+    ) public onlyOwner(did) returns (bool) {
         // check that new address is not zero address
         require(newOwner != address(0), "new address cannot be zero address");
         identities[did].owner = newOwner;
@@ -67,18 +69,20 @@ contract IdentityRegistry {
     // Deactivate an identity
     function deactivateIdentity(string memory did) public onlyOwner(did) {
         identities[did].isActive = false;
+        return;
     }
 
     // Reactivate an identity
     function reactivateIdentity(string memory did) public onlyOwner(did) {
         identities[did].isActive = true;
+        return;
     }
 
     // Issue a new claim
-    function issueClaim(string memory did, string memory dataHash)
-        public
-        returns (uint256)
-    {
+    function issueClaim(
+        string memory did,
+        string memory dataHash
+    ) public returns (uint256) {
         Identity memory identity = identities[did];
         require(identity.owner != address(0), "DID not registered");
         require(identity.isActive, "Identity is not active");
@@ -108,16 +112,20 @@ contract IdentityRegistry {
         );
         claims[claimId].valid = false;
         emit ClaimVerified(claimId, false);
+        return;
     }
 
     // Retrieve DID document
-    function getDidDocument(string memory did)
-        public
-        view
-        returns (string memory)
-    {
+    function getDidDocument(
+        string memory did
+    ) public view returns (string memory) {
         require(identities[did].owner != address(0), "DID not registered");
         require(identities[did].isActive, "Identity is not active");
         return identities[did].didDocument;
+    }
+
+    // Check if DID exists
+    function isDidRegistered(string memory did) public view returns (bool) {
+        return identities[did].owner != address(0);
     }
 }
