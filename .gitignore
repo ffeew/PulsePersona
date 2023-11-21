@@ -131,3 +131,5 @@ dist
 
 # remix
 .deps
+
+.DS_store

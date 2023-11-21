@@ -12,7 +12,7 @@ contract IdentityRegistry {
         uint256 id;
         address issuer;
         string data; // hash of the claim data
-        bool valid;
+        bool valid; // true if the claim is valid, false if it has been revoked
     }
 
     mapping(string => Identity) private identities;
@@ -22,9 +22,13 @@ contract IdentityRegistry {
     // Events
     event IdentityRegistered(string did, address owner);
     event ClaimIssued(uint256 claimId, string did, string data);
-    event ClaimVerified(uint256 claimId, bool valid);
+    event ClaimRevoked(uint256 claimId);
     event IdentityModified(string did, string newData);
     event IdentityTransferred(string did, address newOwner);
+
+    constructor() {
+        claimIdCounter = 1;
+    }
 
     // Modifier that only allows the owner of the identity to execute the function
     modifier onlyOwner(string memory did) {
@@ -96,12 +100,13 @@ contract IdentityRegistry {
         return claimIdCounter++;
     }
 
-    // Verify a claim
-    function verifyClaim(uint256 claimId) public view returns (bool) {
+    // Obtain the hash of a claim
+    function getClaimHash(uint256 claimId) public view returns (string memory) {
         Claim memory claim = claims[claimId];
-        require(claim.issuer != address(0), "Claim not issued");
-        // emit ClaimVerified(claimId, claim.valid);
-        return claim.valid;
+        require(claim.issuer != address(0), "Claim does not exist");
+        require(claim.valid, "Claim has been revoked");
+
+        return claim.data;
     }
 
     // Revoke a claim
@@ -111,7 +116,7 @@ contract IdentityRegistry {
             "Only the issuer can revoke the claim"
         );
         claims[claimId].valid = false;
-        emit ClaimVerified(claimId, false);
+        emit ClaimRevoked(claimId);
         return;
     }
 
@@ -127,5 +132,10 @@ contract IdentityRegistry {
     // Check if DID exists
     function isDidRegistered(string memory did) public view returns (bool) {
         return identities[did].owner != address(0);
+    }
+
+    // Check if DID is active
+    function isDidActive(string memory did) public view returns (bool) {
+        return identities[did].isActive;
     }
 }
