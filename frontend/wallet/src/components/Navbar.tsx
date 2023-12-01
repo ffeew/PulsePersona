@@ -73,7 +73,7 @@ export default function Navbar() {
 
         {/* divider */}
         <div className="w-full py-2 px-10">
-          <div className="w-full h-[1px] bg-theme-gray rounded-full" />
+          <div className="w-full h-[1px] bg-theme-gray/20 rounded-full" />
         </div>
 
         {/* auth tab */}

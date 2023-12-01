@@ -7,10 +7,14 @@ import PauseButton from "../assets/svgs/PauseButton";
 import MoreButton from "../assets/svgs/MoreButton";
 import border from "../assets/images/border.png";
 import Document from "../assets/svgs/Document";
+import Success from "../assets/svgs/Success";
+import Fail from "../assets/svgs/Fail";
 
 interface UploadFileModalProps {
   showModal: boolean;
+  verifySuccess: boolean;
   closeModal: () => void;
+  handleVerify: (file: object) => void;
 }
 
 interface AnimatedProgressBarProps {
@@ -19,20 +23,23 @@ interface AnimatedProgressBarProps {
 
 export default function UploadFileModal({
   showModal,
+  verifySuccess,
   closeModal,
+  handleVerify,
 }: UploadFileModalProps) {
   const browseRef = useRef<HTMLInputElement>(null);
   const [uploadComplete, setUploadComplete] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [verifyResult, setVerifyResult] = useState("");
   const [dragEnter, setDragEnter] = useState(false);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDragEnter(false);
     const file = e?.target?.files?.[0];
-    console.log(file);
     if (file?.type !== "application/json") {
       alert("Invalid File Type. We only accept JSON files. Please Try Again.");
     } else {
+      handleVerify && handleVerify(file);
       setShowProgressBar(true);
     }
   };
@@ -60,6 +67,16 @@ export default function UploadFileModal({
       }, 5000);
     }
   }, [showProgressBar]);
+
+  useEffect(() => {
+    if (uploadComplete) {
+      setTimeout(() => {
+        setUploadComplete(false);
+        setVerifyResult(verifySuccess ? "success" : "fail");
+      }, 4000);
+    }
+  }, [uploadComplete]);
+
   return (
     showModal && (
       <div
@@ -114,7 +131,7 @@ export default function UploadFileModal({
                       <p className="font-semibold underline">browse</p>
                     </button>
                   </p>
-                  <p className="text-xs font-semibold text-theme-[##C6C6C6]">
+                  <p className="text-xs font-semibold text-[#C6C6C6]">
                     Supports JSON only
                   </p>
                 </div>
@@ -129,12 +146,27 @@ export default function UploadFileModal({
               {uploadComplete ? (
                 <div className="w-full flex flex-row justify-between items-center py-3 px-4 bg-[#F7F7F7]">
                   <div className="flex flex-col justify-center items-start ">
-                    <p className="text-xs font-semibold">Completed</p>
+                    <p className="text-xs font-semibold">Uploaded</p>
                     <p className="text-2xs font-medium text-[#999999]">
-                      Logging you in . . .
+                      Verifying credentials . . .
                     </p>
                   </div>
                   <LoadingCircle className="text-theme-black animate-spin" />
+                </div>
+              ) : verifyResult === "success" ? (
+                <div className="w-full flex flex-row justify-between items-center py-4 px-4 bg-[#F7F7F7]">
+                  <p className="text-xs font-semibold">Login Successful</p>
+                  <Success className="text-green-600" />
+                </div>
+              ) : verifyResult === "fail" ? (
+                <div className="w-full flex flex-row justify-between items-center py-3 px-4 bg-[#F7F7F7]">
+                  <div className="flex flex-col justify-center items-start ">
+                    <p className="text-xs font-semibold">Login Unsuccessful</p>
+                    <p className="text-2xs font-medium text-[#999999]">
+                      Please try again.
+                    </p>
+                  </div>
+                  <Fail className="text-red-500" />
                 </div>
               ) : (
                 <AnimatedProgressBar>

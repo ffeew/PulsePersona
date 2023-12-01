@@ -24,19 +24,39 @@ function App() {
             <Logo className="text-theme-black" />
             <p className="font-semibold text-3xl">Mango Inc.</p>
           </div>
-          <div className="w-[400px] flex-col-all-center space-y-7 px-10 py-7 bg-white drop-shadow-card rounded-3xl">
+          <div className="w-[500px] flex-col-all-center space-y-7 px-10 py-7 bg-white drop-shadow-card rounded-3xl">
             <p className=" font-medium text-center">
               Create Verification Credentials
             </p>
+            <div className="w-full grid grid-cols-2 gap-7">
+              <input
+                type="text"
+                placeholder="First name"
+                className="w-full py-4 px-5 bg-theme-input-bg rounded-xl"
+                onChange={(e) => setFirstName(e.target.value.trim())}
+              />
+              <input
+                type="text"
+                placeholder="Last name"
+                className="w-full py-4 px-5 bg-theme-input-bg rounded-xl"
+                onChange={(e) => setLastName(e.target.value.trim())}
+              />
+            </div>
             <input
               type="text"
-              placeholder="First name"
+              placeholder="DID"
               className="w-full py-4 px-5 bg-theme-input-bg rounded-xl"
-              onChange={(e) => setFirstName(e.target.value.trim())}
+              onChange={(e) => setLastName(e.target.value.trim())}
             />
             <input
               type="text"
-              placeholder="Last name"
+              placeholder="Email"
+              className="w-full py-4 px-5 bg-theme-input-bg rounded-xl"
+              onChange={(e) => setLastName(e.target.value.trim())}
+            />
+            <input
+              type="text"
+              placeholder="Phone Number"
               className="w-full py-4 px-5 bg-theme-input-bg rounded-xl"
               onChange={(e) => setLastName(e.target.value.trim())}
             />
