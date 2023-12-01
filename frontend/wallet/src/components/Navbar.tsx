@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate, useLocation } from "react-router-dom";
 import AnimatedBackground from "./AnimatedBackground";
-import Analytics from "../assets/Analytics";
+import Documents from "../assets/Documents";
+import Setting from "../assets/Setting";
+import Logout from "../assets/Logout";
+import Logo from "../assets/Logo";
 
 interface TabProps {
   navigate: any;
@@ -31,7 +34,7 @@ export default function Navbar() {
     {
       name: "VCs",
       path: "/",
-      icon: <Analytics />,
+      icon: <Documents className="w-4 h-auto" />,
     },
   ];
 
@@ -39,7 +42,7 @@ export default function Navbar() {
     {
       name: "Settings",
       path: "/settings",
-      icon: <Analytics />,
+      icon: <Setting className="w-4 h-auto" />,
     },
   ];
 
@@ -47,7 +50,7 @@ export default function Navbar() {
     {
       name: "Logout",
       path: "/logout",
-      icon: <Analytics />,
+      icon: <Logout className="w-4 h-auto" />,
     },
   ];
 
@@ -56,6 +59,7 @@ export default function Navbar() {
       <div className="w-full flex flex-col space-y-20 justify-center items-start">
         {/* logo */}
         <div className="w-full flex flex-row justify-start items-center px-10 space-x-2">
+          <Logo className="text-theme-white" />
           <p className="font-medium">Pulse Persona</p>
         </div>
 
@@ -73,7 +77,7 @@ export default function Navbar() {
 
         {/* divider */}
         <div className="w-full py-2 px-10">
-          <div className="w-full h-[1px] bg-theme-gray/20 rounded-full" />
+          <div className="w-full h-[2px] bg-theme-gray rounded-full" />
         </div>
 
         {/* auth tab */}
@@ -87,21 +91,21 @@ function Tab(props: TabProps) {
   const { navigate, pathname, tab } = props;
 
   return (
-    <AnimatedBackground backgroundClassname="bg-[#36373C] rounded-xl">
+    <AnimatedBackground backgroundClassname="bg-theme-gray rounded-xl">
       <button
         className="pressable group w-full flex flex-row justify-start items-center py-5 px-4 space-x-4"
         onClick={() => navigate(tab.path)}
       >
         <div
-          className={`w-4 h-auto ${
-            pathname === tab.path ? "text-theme-accent" : "text-theme-gray"
+          className={`${
+            pathname === tab.path ? "text-theme-white" : "text-theme-light-gray"
           }`}
         >
           {tab.icon}
         </div>
         <p
           className={`${
-            pathname === tab.path ? "text-theme-white" : "text-theme-gray"
+            pathname === tab.path ? "text-theme-white" : "text-theme-light-gray"
           }`}
         >
           {tab.name}
