@@ -19,7 +19,8 @@ describe("Identity Creation", function () {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await expect(registry.connect(user1).registerIdentity(did, didDocument))
 			.to.emit(registry, "IdentityRegistered")
@@ -34,7 +35,8 @@ describe("Identity Creation", function () {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		// First registration
 		await registry.connect(user1).registerIdentity(did, didDocument);
@@ -53,7 +55,8 @@ describe("Identity Deactivation and Reactivation", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 
@@ -68,7 +71,8 @@ describe("Identity Deactivation and Reactivation", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 
@@ -83,7 +87,8 @@ describe("Identity Deactivation and Reactivation", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 
@@ -99,7 +104,8 @@ describe("Identity Deactivation and Reactivation", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 		await registry.connect(user1).deactivateIdentity(did);
@@ -117,7 +123,8 @@ describe("Identity Update", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 
@@ -132,7 +139,8 @@ describe("Identity Update", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 
@@ -147,8 +155,10 @@ describe("Identity Update", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const newDidDocument = "New DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const newDidDocument =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 		await registry.connect(user1).modifyDidDocument(did, newDidDocument);
@@ -162,8 +172,10 @@ describe("Identity Update", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const newDidDocument = "New DID Document";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const newDidDocument =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 		await registry.connect(user1).modifyDidDocument(did, newDidDocument);
@@ -179,17 +191,21 @@ describe("Claim Issuance", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const claimHash = "Sample Claim Hash";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const claimHash =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const claimId =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 
-		await expect(registry.connect(user1).issueClaim(did, claimHash))
+		await expect(registry.connect(user1).issueClaim(did, claimId, claimHash))
 			.to.emit(registry, "ClaimIssued")
 			.withArgs(1, did, claimHash);
 
 		// check if the claimId is increasing
-		await expect(registry.connect(user2).issueClaim(did, claimHash))
+		await expect(registry.connect(user2).issueClaim(did, claimId, claimHash))
 			.to.emit(registry, "ClaimIssued")
 			.withArgs(2, did, claimHash);
 	});
@@ -200,20 +216,24 @@ describe("Claim Issuance", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const claimHash = "Sample Claim Hash";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const claimHash =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const claimId =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
 		await registry.connect(user1).deactivateIdentity(did);
 
 		// deactivated user
 		await expect(
-			registry.connect(user2).issueClaim(did, claimHash)
+			registry.connect(user2).issueClaim(did, claimId, claimHash)
 		).to.be.revertedWith("Identity is not active");
 
 		// non-existent user
 		await expect(
-			registry.connect(user2).issueClaim("did:example:456", claimHash)
+			registry.connect(user2).issueClaim("did:example:456", claimId, claimHash)
 		).to.be.revertedWith("DID not registered");
 	});
 });
@@ -225,14 +245,18 @@ describe("Claim Verification", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const claimHash = "Sample Claim Hash";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const claimHash =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const claimId =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
-		await registry.connect(user1).issueClaim(did, claimHash);
+		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
 		// check the validity of the claim by retrieving the claim hash and comparing it to the verfiable claim hash
-		expect(await registry.getClaimHash(1)).to.equal(claimHash);
+		expect(await registry.getClaimHash(claimId)).to.equal(claimHash);
 	});
 
 	it("Should only return hash of a valid claim", async () => {
@@ -240,22 +264,27 @@ describe("Claim Verification", () => {
 			deployIdentityRegistryFixture
 		);
 
+		const claimId =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+
 		// non-existent claim
-		await expect(registry.getClaimHash(1)).to.be.revertedWith(
+		await expect(registry.getClaimHash(claimId)).to.be.revertedWith(
 			"Claim does not exist"
 		);
 
 		// invalid claim
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const claimHash = "Sample Claim Hash";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const claimHash =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
-		await registry.connect(user1).issueClaim(did, claimHash);
+		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
-		await registry.connect(user1).revokeClaim(1);
+		await registry.connect(user1).revokeClaim(claimId);
 
-		await expect(registry.getClaimHash(1)).to.be.revertedWith(
+		await expect(registry.getClaimHash(claimId)).to.be.revertedWith(
 			"Claim has been revoked"
 		);
 	});
@@ -268,17 +297,21 @@ describe("Claim Revocation", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const claimHash = "Sample Claim Hash";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const claimHash =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const claimId =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
-		await registry.connect(user1).issueClaim(did, claimHash);
+		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
-		await expect(registry.connect(user1).revokeClaim(1))
+		await expect(registry.connect(user1).revokeClaim(claimId))
 			.to.emit(registry, "ClaimRevoked")
-			.withArgs(1);
+			.withArgs(claimId);
 
-		await expect(registry.getClaimHash(1)).to.be.revertedWith(
+		await expect(registry.getClaimHash(claimId)).to.be.revertedWith(
 			"Claim has been revoked"
 		);
 	});
@@ -289,14 +322,18 @@ describe("Claim Revocation", () => {
 		);
 
 		const did = "did:example:123";
-		const didDocument = "Sample DID Document";
-		const claimHash = "Sample Claim Hash";
+		const didDocument =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const claimHash =
+			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const claimId =
+			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 
 		await registry.connect(user1).registerIdentity(did, didDocument);
-		await registry.connect(user1).issueClaim(did, claimHash);
+		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
-		await expect(registry.connect(user2).revokeClaim(1)).to.be.revertedWith(
-			"Only the issuer can revoke the claim"
-		);
+		await expect(
+			registry.connect(user2).revokeClaim(claimId)
+		).to.be.revertedWith("Only the issuer can revoke the claim");
 	});
 });
