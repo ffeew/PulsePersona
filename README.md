@@ -9,35 +9,43 @@ At its core, PulsePersona embodies an identity system that resonates with the us
 ## Technology Stack
 
 - [Node.js](https://nodejs.org/en/) - JavaScript runtime environment
-- [React](https://reactjs.org/) - JavaScript library for building user interfaces
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
 - [Ethereum](https://ethereum.org/en/) - Blockchain network
 - [Solidity](https://docs.soliditylang.org/en/v0.8.11/) - Programming language for writing smart contracts
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. The project is split into three subdirectories: `issuer`, `verifier`, `wallet`. Each subdirectory contains a separate application that can be run independently and is aimed at representing a different user role in the context of self-sovereign identity (SSI).
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+The project is split into three parts: `issuer`, `verifier`, `wallet`. Each part contains a separate application that can be run independently and is aimed at representing a different user role in the context of self-sovereign identity (SSI).
+
+This repository contains the backend of PulsePersona--the smart contract.
+
+For the frontend, please refer to the following repositories:
+
+- [Issuer](https://github.com/ffeew/PulsePersona_Issuer)
+- [Verifier](https://github.com/ffeew/PulsePersona_Verifier)
+- [Wallet](https://github.com/ffeew/PulsePersona_Wallet)
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/en/) - v18.15.0 or higher
+- [Node.js](https://nodejs.org/en/) - v18.17.0 or higher
 
 ### Installation
 
 1. Clone the repository
 
-```
+```bash
 git clone https://github.com/ffeew/PulsePersona
 ```
 
-2. Install NPM packages for each of the subdirectories: `issuer`, `verifier`, `wallet`
+2. Install NPM packages
 
-```
+```bash
 npm install
 ```
 
 3. Run the application
 
-```
+```bash
 npm run dev
 ```

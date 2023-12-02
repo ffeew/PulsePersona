@@ -131,3 +131,17 @@ dist
 
 # remix
 .deps
+
+# Hardhat files
+/cache
+/artifacts
+
+# TypeChain files
+/typechain
+/typechain-types
+
+# solidity-coverage files
+/coverage
+/coverage.json
+
+.DS_store
