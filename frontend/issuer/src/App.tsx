@@ -1,10 +1,35 @@
 import { useState } from "react";
 import background from "./assets/background.png";
 import Logo from "./assets/Logo";
+import { ethers } from "ethers";
+import './assets/abi.json';
 
 function App() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+
+  const contractAddress = '0xa34a080a97A01f340f853Af69Fe7487E73561aA0';
+  const abi = ['./assets/abi.json'];
+
+  
+
+  const handleGenerate = async () => {
+    try {
+      const dataToHash = `${firstName} ${lastName}`;
+      const sha256Hash = ethers.utils.sha256(ethers.utils.toUtf8Bytes(dataToHash));
+
+      console.log('Generated Hash:', sha256Hash);
+
+      
+      const transaction = await contract.addHash(sha256Hash);
+      await transaction.wait();
+
+      console.log('Hash added to the blockchain successfully.');
+    } catch (error) {
+      console.error('Error adding hash to the blockchain:', error);
+    }
+  };
+
 
   const handleGenerate = () => {
     console.log({ firstName: firstName, lastName: lastName });
