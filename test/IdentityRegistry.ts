@@ -21,12 +21,17 @@ describe("Identity Creation", function () {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await expect(registry.connect(user1).registerIdentity(did, didDocument))
+		await expect(
+			registry.connect(user1).registerIdentity(did, didDocument, ipfsCid)
+		)
 			.to.emit(registry, "IdentityRegistered")
 			.withArgs(did, user1.address);
 
 		expect(await registry.isDidRegistered(did)).to.equal(true);
+
+		expect(await registry.getDidOwner(did)).to.equal(user1.address);
 	});
 
 	it("Should fail to register an already registered DID", async function () {
@@ -37,13 +42,14 @@ describe("Identity Creation", function () {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
 		// First registration
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 
 		// Attempt to re-register
 		await expect(
-			registry.connect(user1).registerIdentity(did, didDocument)
+			registry.connect(user1).registerIdentity(did, didDocument, ipfsCid)
 		).to.be.revertedWith("DID already registered");
 	});
 });
@@ -57,8 +63,9 @@ describe("Identity Deactivation and Reactivation", () => {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 
 		await registry.connect(user1).deactivateIdentity(did);
 
@@ -73,8 +80,9 @@ describe("Identity Deactivation and Reactivation", () => {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 
 		await expect(
 			registry.connect(user2).deactivateIdentity(did)
@@ -89,8 +97,9 @@ describe("Identity Deactivation and Reactivation", () => {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 
 		await registry.connect(user1).deactivateIdentity(did);
 		await registry.connect(user1).reactivateIdentity(did);
@@ -106,8 +115,9 @@ describe("Identity Deactivation and Reactivation", () => {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).deactivateIdentity(did);
 
 		await expect(
@@ -125,8 +135,9 @@ describe("Identity Update", () => {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 
 		await expect(registry.connect(user1).transferOwnership(did, user2.address))
 			.to.emit(registry, "IdentityTransferred")
@@ -141,8 +152,9 @@ describe("Identity Update", () => {
 		const did = "did:example:123";
 		const didDocument =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 
 		await expect(
 			registry.connect(user2).transferOwnership(did, user2.address)
@@ -159,8 +171,9 @@ describe("Identity Update", () => {
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 		const newDidDocument =
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).modifyDidDocument(did, newDidDocument);
 
 		expect(await registry.getDidDocument(did)).to.equal(newDidDocument);
@@ -176,8 +189,9 @@ describe("Identity Update", () => {
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 		const newDidDocument =
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).modifyDidDocument(did, newDidDocument);
 
 		expect(await registry.getDidDocument(did)).to.equal(newDidDocument);
@@ -197,8 +211,9 @@ describe("Claim Issuance", () => {
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 		const claimId =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 
 		await expect(registry.connect(user1).issueClaim(did, claimId, claimHash))
 			.to.emit(registry, "ClaimIssued")
@@ -222,8 +237,9 @@ describe("Claim Issuance", () => {
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 		const claimId =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).deactivateIdentity(did);
 
 		// deactivated user
@@ -251,8 +267,9 @@ describe("Claim Verification", () => {
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 		const claimId =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
 		// check the validity of the claim by retrieving the claim hash and comparing it to the verfiable claim hash
@@ -278,8 +295,9 @@ describe("Claim Verification", () => {
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
 		const claimHash =
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
 		await registry.connect(user1).revokeClaim(claimId);
@@ -303,8 +321,9 @@ describe("Claim Revocation", () => {
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 		const claimId =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
 		await expect(registry.connect(user1).revokeClaim(claimId))
@@ -328,8 +347,9 @@ describe("Claim Revocation", () => {
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 		const claimId =
 			"0xd283f3979d00cb5493f2da07819695bc299fba34aa6e0bacb484fe07a2fc0ae0";
+		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
 
-		await registry.connect(user1).registerIdentity(did, didDocument);
+		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
 		await registry.connect(user1).issueClaim(did, claimId, claimHash);
 
 		await expect(
