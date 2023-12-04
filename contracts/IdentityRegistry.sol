@@ -6,6 +6,7 @@ contract IdentityRegistry {
         address owner; // the wallet address of the owner of the identity
         bytes32 didDocument; // hash of the DID document
         bool isActive;
+        string ipfsCid; // location of the DID document on IPFS
     }
 
     struct Claim {
@@ -44,9 +45,13 @@ contract IdentityRegistry {
     /// @dev Emits an IdentityRegistered event on successful registration.
     /// @param did The decentralized identifier for the identity
     /// @param didDocument The hash of the DID document
-    function registerIdentity(string calldata did, bytes32 didDocument) public {
+    function registerIdentity(
+        string calldata did,
+        bytes32 didDocument,
+        string calldata ipfsCid
+    ) public {
         require(identities[did].owner == address(0), "DID already registered");
-        identities[did] = Identity(msg.sender, didDocument, true);
+        identities[did] = Identity(msg.sender, didDocument, true, ipfsCid);
         emit IdentityRegistered(did, msg.sender);
         return;
     }
@@ -58,9 +63,11 @@ contract IdentityRegistry {
     /// @param newDidDocument The new DID document hash to be associated
     function modifyDidDocument(
         string calldata did,
-        bytes32 newDidDocument
+        bytes32 newDidDocument,
+        string calldata ipfsCid
     ) public onlyOwner(did) {
         identities[did].didDocument = newDidDocument;
+        identities[did].ipfsCid = ipfsCid;
         emit IdentityModified(did, newDidDocument);
         return;
     }
@@ -141,10 +148,10 @@ contract IdentityRegistry {
         return;
     }
 
-    /// @notice Retrieves the DID document for a given identity
+    /// @notice Retrieves the DID document hash for a given identity
     /// @dev The identity must be registered and active.
     /// @param did The decentralized identifier for the identity
-    /// @return The DID document associated with the identity
+    /// @return The DID document hash associated with the identity
     function getDidDocument(string calldata did) public view returns (bytes32) {
         require(identities[did].owner != address(0), "DID not registered");
         require(identities[did].isActive, "Identity is not active");
@@ -163,5 +170,25 @@ contract IdentityRegistry {
     /// @return True if the DID is active, false otherwise
     function isDidActive(string calldata did) public view returns (bool) {
         return identities[did].isActive;
+    }
+
+    /// @notice Retrieves the IPFS CID for a given identity
+    /// @dev The identity must be registered.
+    /// @param did The decentralized identifier for the identity
+    /// @return The IPFS CID associated with the identity
+    function getDidIpfsCid(
+        string calldata did
+    ) public view returns (string memory) {
+        require(identities[did].owner != address(0), "DID not registered");
+        return identities[did].ipfsCid;
+    }
+
+    /// @notice Retrieves the owner of a given identity
+    /// @dev The identity must be registered.
+    /// @param did The decentralized identifier for the identity
+    /// @return The address of the owner of the identity
+    function getDidOwner(string calldata did) public view returns (address) {
+        require(identities[did].owner != address(0), "DID not registered");
+        return identities[did].owner;
     }
 }
