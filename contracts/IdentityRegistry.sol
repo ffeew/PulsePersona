@@ -63,9 +63,11 @@ contract IdentityRegistry {
     /// @param newDidDocument The new DID document hash to be associated
     function modifyDidDocument(
         string calldata did,
-        bytes32 newDidDocument
+        bytes32 newDidDocument,
+        string calldata ipfsCid
     ) public onlyOwner(did) {
         identities[did].didDocument = newDidDocument;
+        identities[did].ipfsCid = ipfsCid;
         emit IdentityModified(did, newDidDocument);
         return;
     }

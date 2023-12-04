@@ -172,9 +172,12 @@ describe("Identity Update", () => {
 		const newDidDocument =
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
+		const newIpfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmabcdekqFbiwReogJgS1ASEd";
 
 		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
-		await registry.connect(user1).modifyDidDocument(did, newDidDocument);
+		await registry
+			.connect(user1)
+			.modifyDidDocument(did, newDidDocument, newIpfsCid);
 
 		expect(await registry.getDidDocument(did)).to.equal(newDidDocument);
 	});
@@ -190,9 +193,12 @@ describe("Identity Update", () => {
 		const newDidDocument =
 			"0x4659db3b248cae1bb6856ee63308af6c9c15239e3bb76f425fbacdd84bb15330";
 		const ipfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmRuZBkqFbiwReogJgS1zR1n";
+		const newIpfsCid = "QmdfTbBqBPQ7VNxZEYEj14VmabcdekqFbiwReogJgS1ASEd";
 
 		await registry.connect(user1).registerIdentity(did, didDocument, ipfsCid);
-		await registry.connect(user1).modifyDidDocument(did, newDidDocument);
+		await registry
+			.connect(user1)
+			.modifyDidDocument(did, newDidDocument, newIpfsCid);
 
 		expect(await registry.getDidDocument(did)).to.equal(newDidDocument);
 	});
