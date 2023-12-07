@@ -1,4 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
+import "hardhat-gas-reporter";
+import "solidity-coverage";
 import "@nomicfoundation/hardhat-toolbox";
 import "dotenv/config";
 
@@ -12,6 +14,11 @@ const config: HardhatUserConfig = {
 			url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
 			accounts: [SEPOLIA_PRIVATE_KEY],
 		},
+	},
+	gasReporter: {
+		enabled: process.env.REPORT_GAS ? true : false,
+		currency: "USD",
+		gasPrice: 67,
 	},
 };
 export default config;

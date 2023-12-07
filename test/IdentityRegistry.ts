@@ -32,6 +32,8 @@ describe("Identity Creation", function () {
 		expect(await registry.isDidRegistered(did)).to.equal(true);
 
 		expect(await registry.getDidOwner(did)).to.equal(user1.address);
+
+		expect(await registry.getDidIpfsCid(did)).to.equal(ipfsCid);
 	});
 
 	it("Should fail to register an already registered DID", async function () {
